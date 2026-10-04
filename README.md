@@ -4,7 +4,7 @@
 > 🔗 **Alternate Mirror:** [https://airpower-predictive-maintenance-mu.vercel.app](https://airpower-predictive-maintenance-mu.vercel.app)  
 > 📁 **GitHub Repository:** [https://github.com/im-yousuf/AIR-POWER](https://github.com/im-yousuf/AIR-POWER)
 
-[![Live Application](https://img.shields.io/badge/Live%20Demo-Vercel-success?style=for-the-badge&logo=vercel)](https://airpower-predictive-maintenance.vercel.app)
+[![Live Application](https://img.shields.io/badge/Live%20Demo-Vercel-success?style=for-the-badge&logo=vercel)](https://airpower-predictive-maintenance-mu.vercel.app)
 [![Ministry of Defence](https://img.shields.io/badge/MoD%20DSSC-Problem%2026249-1d7ae0?style=for-the-badge)](https://github.com/im-yousuf/AIR-POWER)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Strict%20Typecheck-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
 [![Zero Runtime Deps](https://img.shields.io/badge/Dependencies-Zero%20Runtime%20Chart%20Libs-emerald?style=for-the-badge)](https://react.dev/)
@@ -14,8 +14,8 @@
 ## 🌐 About & Live Vercel Deployment
 
 AirPower is deployed live on Vercel at:
-- **Primary Production URL:** **[https://airpower-predictive-maintenance.vercel.app](https://airpower-predictive-maintenance.vercel.app)**
-- **Alternate Production URL:** **[https://airpower-predictive-maintenance-mu.vercel.app](https://airpower-predictive-maintenance-mu.vercel.app)**
+- **Primary Production URL:** **[https://airpower-predictive-maintenance-mu.vercel.app](https://airpower-predictive-maintenance-mu.vercel.app)**
+- **Alternate Production URL:** **[https://airpower-predictive-maintenance.vercel.app](https://airpower-predictive-maintenance.vercel.app)**
 
 An integrated, military-grade predictive maintenance and fleet readiness platform built for the **Ministry of Defence (MoD) — Defence Services Staff College (DSSC)** under **Problem Statement ID: 26249**.
 
@@ -30,7 +30,7 @@ AirPower breaks the data silos between onboard aircraft health monitoring (IoT),
 - **Department:** Defence Services Staff College (DSSC)
 - **Category:** Software
 - **Theme:** Transportation & Logistics
-- **Live Vercel Application:** [https://airpower-predictive-maintenance.vercel.app](https://airpower-predictive-maintenance.vercel.app)
+- **Live Vercel Application:** [https://airpower-predictive-maintenance-mu.vercel.app](https://airpower-predictive-maintenance-mu.vercel.app)
 - **GitHub Repository:** [https://github.com/im-yousuf/AIR-POWER](https://github.com/im-yousuf/AIR-POWER)
 
 ### The Core Problem Statement
