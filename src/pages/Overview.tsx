@@ -140,7 +140,7 @@ export default function Overview({ onOpenAircraft }: { onOpenAircraft: (id: stri
           }
         >
           <LineChart
-            height={214}
+            height={320}
             series={[
               {
                 name: 'Availability',

@@ -47,165 +47,165 @@ export default function Spares() {
         <Kpi label="Orders held on spares" value={awaiting.length} tone="warn" foot="work stopped, waiting parts" />
       </div>
 
-      <div className="grid g-2-1">
-        <Card title="Inventory ledger" subtitle={`${rows.length} line items · ranked by risk`} pad={false}>
-          <Table
-            dense
-            head={['Risk', 'Part no.', 'Description', 'Crit.', 'On hand', 'Reserved', 'Net', 'Cover', 'Lead', 'Reorder', 'Demand/30d', 'Supplier']}
-          >
-            {[...rows]
-              .sort((a, b) => {
-                const order = { STOCKOUT: 0, 'LEAD RISK': 1, OK: 2 }
-                return order[risk(a)] - order[risk(b)]
-              })
-              .slice(0, showMoreSpares ? undefined : 8)
-              .map((s) => {
-                const net = s.onHand - s.reserved
-                const r = risk(s)
-                return (
-                  <tr key={s.part}>
-                    <td>
-                      <Tag tone={r === 'STOCKOUT' ? 'bad' : r === 'LEAD RISK' ? 'warn' : 'ok'}>{r}</Tag>
-                    </td>
-                    <td className="mono">{s.part}</td>
-                    <td>{s.name}</td>
-                    <td>
-                      <span className="chip">{s.criticality}</span>
-                    </td>
-                    <td className="mono num">{s.onHand}</td>
-                    <td className="mono num dim">{s.reserved}</td>
-                    <td className="mono num">{net}</td>
-                    <td className="mono num" style={{ color: spareCover(s) < s.leadDays ? '#f87171' : undefined }}>
-                      {spareCover(s)} d
-                    </td>
-                    <td className="mono num">{s.leadDays} d</td>
-                    <td className="mono num dim">{s.reorder}</td>
-                    <td className="mono num">{s.demand30}</td>
-                    <td className="dim" style={{ fontSize: 12 }}>
-                      {s.supplier}
-                    </td>
-                  </tr>
-                )
-              })}
-          </Table>
-          {rows.length > 8 && (
-            <button className="show-more-btn" onClick={() => setShowMoreSpares(v => !v)}>
-              {showMoreSpares ? '▲ Show less' : `▼ Show ${rows.length - 8} more line items`}
-            </button>
-          )}
-        </Card>
+      <Card title="Inventory ledger" subtitle={`${rows.length} line items · ranked by risk`} pad={false}>
+        <Table
+          dense
+          head={['Risk', 'Part no.', 'Description', 'Crit.', 'On hand', 'Reserved', 'Net', 'Cover', 'Lead', 'Reorder', 'Demand/30d', 'Supplier']}
+        >
+          {[...rows]
+            .sort((a, b) => {
+              const order = { STOCKOUT: 0, 'LEAD RISK': 1, OK: 2 }
+              return order[risk(a)] - order[risk(b)]
+            })
+            .slice(0, showMoreSpares ? undefined : 8)
+            .map((s) => {
+              const net = s.onHand - s.reserved
+              const r = risk(s)
+              return (
+                <tr key={s.part}>
+                  <td>
+                    <Tag tone={r === 'STOCKOUT' ? 'bad' : r === 'LEAD RISK' ? 'warn' : 'ok'}>{r}</Tag>
+                  </td>
+                  <td className="mono">{s.part}</td>
+                  <td>{s.name}</td>
+                  <td>
+                    <span className="chip">{s.criticality}</span>
+                  </td>
+                  <td className="mono num">{s.onHand}</td>
+                  <td className="mono num dim">{s.reserved}</td>
+                  <td className="mono num">{net}</td>
+                  <td className="mono num" style={{ color: spareCover(s) < s.leadDays ? '#f87171' : undefined }}>
+                    {spareCover(s)} d
+                  </td>
+                  <td className="mono num">{s.leadDays} d</td>
+                  <td className="mono num dim">{s.reorder}</td>
+                  <td className="mono num">{s.demand30}</td>
+                  <td className="dim" style={{ fontSize: 12 }}>
+                    {s.supplier}
+                  </td>
+                </tr>
+              )
+            })}
+        </Table>
+        {rows.length > 8 && (
+          <button className="show-more-btn" onClick={() => setShowMoreSpares(v => !v)}>
+            {showMoreSpares ? '▲ Show less' : `▼ Show ${rows.length - 8} more line items`}
+          </button>
+        )}
+      </Card>
 
-        <div className="grid" style={{ gap: 16, alignContent: 'start' }}>
-          <Card title="Long-lead critical parts" subtitle="Order these before the alert, not after the failure">
-            <div className="list">
-              {longLead
-                .sort((a, b) => b.leadDays - a.leadDays)
-                .map((s) => (
-                  <div key={s.part} className="row tight">
-                    <div style={{ flex: 1 }}>
-                      <div style={{ fontSize: 12.5, fontWeight: 620 }}>{s.name}</div>
-                      <div className="dim mono" style={{ fontSize: 11 }}>
-                        {s.part} · {s.supplier}
-                      </div>
-                    </div>
-                    <div style={{ textAlign: 'right' }}>
-                      <div className="mono" style={{ fontWeight: 700 }}>
-                        {s.leadDays} d
-                      </div>
-                      <div className="dim" style={{ fontSize: 11 }}>
-                        cover {spareCover(s)} d
-                      </div>
-                    </div>
-                  </div>
-                ))}
-            </div>
-            <div className="note">
-              Inventory value ≈ ₹{(valueOnHand / 1e7).toFixed(1)} Cr. {stockoutRisk.length} lines need indent release
-              today.
-            </div>
-          </Card>
-
-          <Card title="Cover vs lead time" subtitle="Days of stock on hand against supplier delivery time">
-            {[...SPARES]
-              .sort((a, b) => spareCover(a) - spareCover(b))
-              .slice(0, 8)
-              .map((s) => {
-                const cover = spareCover(s)
-                const bad = cover < s.leadDays
-                return (
-                  <BarRow
-                    key={s.part}
-                    label={s.name}
-                    value={cover}
-                    max={Math.max(s.leadDays * 1.4, cover)}
-                    color={bad ? '#f87171' : cover < s.reorder ? '#fbbf24' : '#34d399'}
-                    right={`${cover} d`}
-                  />
-                )
-              })}
-            <div className="note">Red bars: supply runs out before the replacement arrives — auto-indent required.</div>
-          </Card>
-
-          <Card
-            title="Live indents"
-            subtitle="Parts reserved from AI alerts — advance each one through approval to receipt"
-            pad={false}
-          >
-            <div style={{ padding: '10px 14px', display: 'grid', gap: 10 }}>
-              {indents.length === 0 && (
-                <div className="empty" style={{ padding: 18 }}>
-                  No indents raised yet — open Predictive faults and indent a part for an alert.
-                </div>
-              )}
-              {indents.map((i) => (
-                <div key={i.id} className="alert" style={{ padding: '10px 12px' }}>
-                  <div className="ring" style={{ ['--p' as string]: i.status === 'RECEIVED' ? 100 : i.status === 'APPROVED' ? 55 : 25, ['--c' as string]: i.status === 'RECEIVED' ? '#0b8f66' : '#1d7ae0' } as CSSProperties}>
-                    <span>{i.qty}×</span>
-                  </div>
-                  <div>
-                    <div className="alert-title">{i.name}</div>
-                    <div className="alert-sub mono">
-                      {i.id} · {i.part} · from alert {i.reason} · ETA {i.etaDays} d
+      <div className="grid g2" style={{ marginTop: 16 }}>
+        <Card title="Long-lead critical parts" subtitle="Order these before the alert, not after the failure">
+          <div className="list">
+            {longLead
+              .sort((a, b) => b.leadDays - a.leadDays)
+              .map((s) => (
+                <div key={s.part} className="row tight">
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontSize: 12.5, fontWeight: 620 }}>{s.name}</div>
+                    <div className="dim mono" style={{ fontSize: 11 }}>
+                      {s.part} · {s.supplier}
                     </div>
                   </div>
                   <div style={{ textAlign: 'right' }}>
-                    <Tag tone={i.status === 'RECEIVED' ? 'ok' : i.status === 'APPROVED' ? 'info' : 'warn'}>
-                      {i.status}
-                    </Tag>
-                    {i.status !== 'RECEIVED' && (
-                      <div>
-                        <button className="pill" style={{ marginTop: 6 }} onClick={() => advanceIndent(i.id)}>
-                          {i.status === 'RAISED' ? 'Approve →' : 'Mark received →'}
-                        </button>
-                      </div>
-                    )}
+                    <div className="mono" style={{ fontWeight: 700 }}>
+                      {s.leadDays} d
+                    </div>
+                    <div className="dim" style={{ fontSize: 11 }}>
+                      cover {spareCover(s)} d
+                    </div>
                   </div>
                 </div>
               ))}
-            </div>
-          </Card>
+          </div>
+          <div className="note">
+            Inventory value ≈ ₹{(valueOnHand / 1e7).toFixed(1)} Cr. {stockoutRisk.length} lines need indent release
+            today.
+          </div>
+        </Card>
 
-          <Card title="Automatic spares trigger" subtitle="Prediction → indent without human hand-off">
-            <div className="timeline">
-              <div className="tl-item bad">
-                <div className="tl-time">prediction raised</div>
-                <div className="tl-text">RUL shorter than supplier lead time + margin</div>
+        <Card title="Cover vs lead time" subtitle="Days of stock on hand against supplier delivery time">
+          {[...SPARES]
+            .sort((a, b) => spareCover(a) - spareCover(b))
+            .slice(0, 8)
+            .map((s) => {
+              const cover = spareCover(s)
+              const bad = cover < s.leadDays
+              return (
+                <BarRow
+                  key={s.part}
+                  label={s.name}
+                  value={cover}
+                  max={Math.max(s.leadDays * 1.4, cover)}
+                  color={bad ? '#f87171' : cover < s.reorder ? '#fbbf24' : '#34d399'}
+                  right={`${cover} d`}
+                />
+              )
+            })}
+          <div className="note">Red bars: supply runs out before the replacement arrives — auto-indent required.</div>
+        </Card>
+      </div>
+
+      <div className="grid g2" style={{ marginTop: 16 }}>
+        <Card
+          title="Live indents"
+          subtitle="Parts reserved from AI alerts — advance each one through approval to receipt"
+          pad={false}
+        >
+          <div style={{ padding: '10px 14px', display: 'grid', gap: 10 }}>
+            {indents.length === 0 && (
+              <div className="empty" style={{ padding: 18 }}>
+                No indents raised yet — open Predictive faults and indent a part for an alert.
               </div>
-              <div className="tl-item warn">
-                <div className="tl-time">+2 min</div>
-                <div className="tl-text">Indent drafted with part, quantity and required-by date</div>
+            )}
+            {indents.map((i) => (
+              <div key={i.id} className="alert" style={{ padding: '10px 12px' }}>
+                <div className="ring" style={{ ['--p' as string]: i.status === 'RECEIVED' ? 100 : i.status === 'APPROVED' ? 55 : 25, ['--c' as string]: i.status === 'RECEIVED' ? '#0b8f66' : '#1d7ae0' } as CSSProperties}>
+                  <span>{i.qty}×</span>
+                </div>
+                <div>
+                  <div className="alert-title">{i.name}</div>
+                  <div className="alert-sub mono">
+                    {i.id} · {i.part} · from alert {i.reason} · ETA {i.etaDays} d
+                  </div>
+                </div>
+                <div style={{ textAlign: 'right' }}>
+                  <Tag tone={i.status === 'RECEIVED' ? 'ok' : i.status === 'APPROVED' ? 'info' : 'warn'}>
+                    {i.status}
+                  </Tag>
+                  {i.status !== 'RECEIVED' && (
+                    <div>
+                      <button className="pill" style={{ marginTop: 6 }} onClick={() => advanceIndent(i.id)}>
+                        {i.status === 'RAISED' ? 'Approve →' : 'Mark received →'}
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
-              <div className="tl-item ok">
-                <div className="tl-time">+10 min</div>
-                <div className="tl-text">Stores ERP reserved stock or released purchase indent</div>
-              </div>
-              <div className="tl-item">
-                <div className="tl-time">arrival</div>
-                <div className="tl-text">Part arrives before AOG — aircraft never leaves the line</div>
-              </div>
+            ))}
+          </div>
+        </Card>
+
+        <Card title="Automatic spares trigger" subtitle="Prediction → indent without human hand-off">
+          <div className="timeline">
+            <div className="tl-item bad">
+              <div className="tl-time">prediction raised</div>
+              <div className="tl-text">RUL shorter than supplier lead time + margin</div>
             </div>
-          </Card>
-        </div>
+            <div className="tl-item warn">
+              <div className="tl-time">+2 min</div>
+              <div className="tl-text">Indent drafted with part, quantity and required-by date</div>
+            </div>
+            <div className="tl-item ok">
+              <div className="tl-time">+10 min</div>
+              <div className="tl-text">Stores ERP reserved stock or released purchase indent</div>
+            </div>
+            <div className="tl-item">
+              <div className="tl-time">arrival</div>
+              <div className="tl-text">Part arrives before AOG — aircraft never leaves the line</div>
+            </div>
+          </div>
+        </Card>
       </div>
     </div>
   )
