@@ -16,7 +16,7 @@ function risk(s: Spare): 'STOCKOUT' | 'LEAD RISK' | 'OK' {
 export default function Spares() {
   const [crit, setCrit] = useState('All')
   const [showMoreSpares, setShowMoreSpares] = useState(false)
-  const { indents, advanceIndent } = usePlatform()
+  const { indents, advanceIndent, canApproveIndent } = usePlatform()
 
   const rows = useMemo(
     () => SPARES.filter((s) => crit === 'All' || s.criticality === crit),
@@ -175,14 +175,33 @@ export default function Spares() {
                   </Tag>
                   {i.status !== 'RECEIVED' && (
                     <div>
-                      <button className="pill" style={{ marginTop: 6 }} onClick={() => advanceIndent(i.id)}>
-                        {i.status === 'RAISED' ? 'Approve →' : 'Mark received →'}
-                      </button>
+                      {canApproveIndent ? (
+                        <button className="pill" style={{ marginTop: 6 }} onClick={() => advanceIndent(i.id)}>
+                          {i.status === 'RAISED' ? 'Approve →' : 'Mark received →'}
+                        </button>
+                      ) : (
+                        <button
+                          className="pill locked"
+                          disabled
+                          style={{ marginTop: 6 }}
+                          title="Action locked: Only Stores & Logistics Officer can approve indents or record receipt"
+                        >
+                          🔒 Stores Auth Req.
+                        </button>
+                      )}
                     </div>
                   )}
                 </div>
               </div>
             ))}
+            {!canApproveIndent && indents.some((i) => i.status !== 'RECEIVED') && (
+              <div style={{ marginTop: 6, fontSize: 11.5, color: '#f59e0b', background: 'rgba(245, 158, 11, 0.08)', border: '1px solid rgba(245, 158, 11, 0.25)', borderRadius: 6, padding: '6px 10px', display: 'flex', alignItems: 'center', gap: 6 }}>
+                <span>🔒</span>
+                <span>
+                  <b>RBAC Policy Enforced:</b> Indent approval & stock receipt actions require <b>Stores & Logistics</b> role clearance.
+                </span>
+              </div>
+            )}
           </div>
         </Card>
 

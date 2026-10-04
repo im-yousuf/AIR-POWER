@@ -44,7 +44,15 @@ function load(): Persisted {
   }
 }
 
+export type RoleId = 'duty-controller' | 'flight-engineer' | 'maint-controller' | 'stores-officer'
+
 interface PlatformApi extends Persisted {
+  roleId: RoleId
+  setRoleId: (id: RoleId) => void
+  canRaiseWO: boolean
+  canApproveIndent: boolean
+  canIndent: boolean
+  canAck: boolean
   ack: (predId: string, tail: string) => void
   raiseWO: (predId: string) => void
   indent: (predId: string, spare: Pick<Spare, 'part' | 'name' | 'leadDays'>, qty?: number) => void
@@ -60,6 +68,12 @@ const uid = (p: string) => `${p}-${Date.now().toString(36)}${(seq++).toString(36
 
 export function PlatformProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<Persisted>(() => (typeof localStorage === 'undefined' ? EMPTY : load()))
+  const [roleId, setRoleId] = useState<RoleId>('duty-controller')
+
+  const canRaiseWO = roleId === 'maint-controller' || roleId === 'duty-controller'
+  const canIndent = roleId === 'stores-officer' || roleId === 'maint-controller'
+  const canApproveIndent = roleId === 'stores-officer'
+  const canAck = roleId === 'maint-controller' || roleId === 'flight-engineer' || roleId === 'duty-controller'
 
   useEffect(() => {
     try {
@@ -152,8 +166,22 @@ export function PlatformProvider({ children }: { children: ReactNode }) {
   const reset = useCallback(() => setState(EMPTY), [])
 
   const api = useMemo<PlatformApi>(
-    () => ({ ...state, ack, raiseWO, indent, advanceIndent, pushLog, reset }),
-    [state, ack, raiseWO, indent, advanceIndent, pushLog, reset],
+    () => ({
+      ...state,
+      roleId,
+      setRoleId,
+      canRaiseWO,
+      canApproveIndent,
+      canIndent,
+      canAck,
+      ack,
+      raiseWO,
+      indent,
+      advanceIndent,
+      pushLog,
+      reset,
+    }),
+    [state, roleId, canRaiseWO, canApproveIndent, canIndent, canAck, ack, raiseWO, indent, advanceIndent, pushLog, reset],
   )
 
   return <Ctx.Provider value={api}>{children}</Ctx.Provider>

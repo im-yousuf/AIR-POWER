@@ -19,7 +19,7 @@ export default function Predictions({ onOpenAircraft }: { onOpenAircraft: (id: s
   const [sev, setSev] = useState('All')
   const [sel, setSel] = useState<string | null>(PREDICTIONS[0]?.id ?? null)
   const [showAllAlerts, setShowAllAlerts] = useState(false)
-  const { acked, raisedWOs, indents, log, ack, raiseWO, indent } = usePlatform()
+  const { acked, raisedWOs, indents, log, ack, raiseWO, indent, canRaiseWO, canIndent, canAck } = usePlatform()
 
   const rows = useMemo(
     () =>
@@ -172,30 +172,46 @@ export default function Predictions({ onOpenAircraft }: { onOpenAircraft: (id: s
                     Inspect {active.tail}
                   </button>
                   <button
-                    className={`pill ${acked[active.id] ? 'on' : ''}`}
-                    disabled={!!acked[active.id]}
-                    onClick={() => ack(active.id, active.tail)}
-                    title="Maintenance controller confirms the alert is real"
+                    className={`pill ${acked[active.id] ? 'on' : !canAck ? 'locked' : ''}`}
+                    disabled={!!acked[active.id] || !canAck}
+                    onClick={() => canAck && ack(active.id, active.tail)}
+                    title={!canAck ? 'Action locked: Requires Flight-Line Engineer, Maintenance Controller or Duty Controller auth' : 'Maintenance controller confirms the alert is real'}
                   >
-                    {acked[active.id] ? '✓ Acknowledged' : 'Acknowledge alert'}
+                    {acked[active.id] ? '✓ Acknowledged' : !canAck ? '🔒 Requires Tech/MRO Auth' : 'Acknowledge alert'}
                   </button>
                   <button
-                    className={`pill ${raisedWOs.some((w) => w.sourcePred === active.id) ? 'on' : ''}`}
-                    disabled={raisedWOs.some((w) => w.sourcePred === active.id)}
-                    onClick={() => raiseWO(active.id)}
-                    title="Creates a real work order that appears in Work control"
+                    className={`pill ${raisedWOs.some((w) => w.sourcePred === active.id) ? 'on' : !canRaiseWO ? 'locked' : ''}`}
+                    disabled={raisedWOs.some((w) => w.sourcePred === active.id) || !canRaiseWO}
+                    onClick={() => canRaiseWO && raiseWO(active.id)}
+                    title={!canRaiseWO ? 'Action locked: Only Maintenance Controller or Duty Controller can raise work orders' : 'Creates a real work order that appears in Work control'}
                   >
-                    {raisedWOs.some((w) => w.sourcePred === active.id) ? '✓ Work order raised' : 'Raise work order'}
+                    {raisedWOs.some((w) => w.sourcePred === active.id)
+                      ? '✓ Work order raised'
+                      : !canRaiseWO
+                      ? '🔒 Requires MRO Auth'
+                      : 'Raise work order'}
                   </button>
                   <button
-                    className={`pill ${indents.some((i) => i.reason === active.id) ? 'on' : ''}`}
-                    disabled={indents.some((i) => i.reason === active.id)}
-                    onClick={() => indent(active.id, spareForSystem(active.system))}
-                    title="Reserves the part before the aircraft is grounded"
+                    className={`pill ${indents.some((i) => i.reason === active.id) ? 'on' : !canIndent ? 'locked' : ''}`}
+                    disabled={indents.some((i) => i.reason === active.id) || !canIndent}
+                    onClick={() => canIndent && indent(active.id, spareForSystem(active.system))}
+                    title={!canIndent ? 'Action locked: Only Stores & Logistics Officer can indent spare parts' : 'Reserves the part before the aircraft is grounded'}
                   >
-                    {indents.some((i) => i.reason === active.id) ? '✓ Spare indented' : `Indent ${spareForSystem(active.system).part}`}
+                    {indents.some((i) => i.reason === active.id)
+                      ? '✓ Spare indented'
+                      : !canIndent
+                      ? '🔒 Requires Logistics Auth'
+                      : `Indent ${spareForSystem(active.system).part}`}
                   </button>
                 </div>
+                {(!canRaiseWO || !canIndent || !canAck) && (
+                  <div style={{ marginTop: 10, fontSize: 11.5, color: '#f59e0b', background: 'rgba(245, 158, 11, 0.08)', border: '1px solid rgba(245, 158, 11, 0.25)', borderRadius: 6, padding: '6px 10px', display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <span>🔒</span>
+                    <span>
+                      <b>RBAC Policy Enforced:</b> Action triggers are restricted according to active role clearance. Switch roles in the top header to unlock MRO work orders or logistics indents.
+                    </span>
+                  </div>
+                )}
                 <div className="note">
                   These buttons write to the shared platform state: the work order appears in <b>Work control</b>, the
                   indent appears in <b>Spares</b>, and every action is written to the audit trail below. {autoWO.length}

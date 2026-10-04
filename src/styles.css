@@ -203,6 +203,80 @@ button {
   padding: 1px 7px;
 }
 
+.nav-perm-badge {
+  margin-left: auto;
+  font-size: 9px;
+  font-family: var(--mono);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 1px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.nav-perm-badge.readonly {
+  background: rgba(148, 163, 184, 0.16);
+  color: #64748b;
+  border: 1px solid rgba(148, 163, 184, 0.28);
+}
+
+.nav-item.on .nav-perm-badge.readonly {
+  background: rgba(255, 255, 255, 0.2);
+  color: #f1f5f9;
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.nav-perm-badge.primary {
+  background: rgba(16, 185, 129, 0.12);
+  color: #059669;
+  border: 1px solid rgba(16, 185, 129, 0.28);
+}
+
+.nav-item.on .nav-perm-badge.primary {
+  background: rgba(255, 255, 255, 0.24);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.perm-chip {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 3px 9px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  text-transform: uppercase;
+}
+
+.perm-chip.primary {
+  background: rgba(16, 185, 129, 0.16);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+.perm-chip.readonly {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fcd34d;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+}
+
+.pill.locked {
+  opacity: 0.65 !important;
+  cursor: not-allowed !important;
+  background: rgba(0, 0, 0, 0.03) !important;
+  border-color: rgba(239, 68, 68, 0.3) !important;
+  color: #8898aa !important;
+}
+
+.pill.locked:hover {
+  border-color: rgba(239, 68, 68, 0.5) !important;
+  background: rgba(239, 68, 68, 0.06) !important;
+  color: #ef4444 !important;
+}
+
 .nav-toggle {
   margin-left: auto;
   width: 28px;
@@ -265,7 +339,8 @@ button {
     #030b1a 100%
   );
   box-shadow: 0 2px 24px rgba(0, 0, 0, 0.45), 0 1px 0 rgba(255,255,255,0.04) inset;
-  overflow: hidden;
+  overflow: visible;
+  z-index: 40;
 }
 
 /* Shimmer sheen overlay */
@@ -383,6 +458,193 @@ button {
   place-items: center;
   font-weight: 700;
   font-size: 12px;
+}
+
+/* ============================================================ role switcher */
+.role-wrapper {
+  position: relative;
+}
+
+.role-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 20px;
+  padding: 3px 10px 3px 4px;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, transform 0.1s;
+}
+.role-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(251, 191, 36, 0.5);
+}
+.role-btn:active {
+  transform: scale(0.98);
+}
+
+.role-avatar {
+  width: 26px;
+  height: 26px;
+  font-size: 11px;
+}
+
+.role-meta {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  line-height: 1.15;
+}
+
+.role-name {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.role-callsign {
+  font-size: 9.5px;
+  font-family: var(--mono);
+  color: #cbd5e1;
+}
+
+.role-caret {
+  font-size: 9px;
+  opacity: 0.7;
+  margin-left: 2px;
+}
+
+.role-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 330px;
+  background: #0f1c30;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 12px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  overflow: hidden;
+  animation: roleFadeIn 0.14s ease-out;
+}
+
+@keyframes roleFadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.role-dropdown-header {
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.role-dropdown-title {
+  font-size: 10.5px;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #94a3b8;
+}
+
+.role-dropdown-clearance {
+  font-size: 9.5px;
+  font-family: var(--mono);
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(239, 68, 68, 0.16);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  font-weight: 600;
+}
+
+.role-list {
+  display: flex;
+  flex-direction: column;
+  padding: 6px;
+  gap: 4px;
+}
+
+.role-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 9px 10px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.12s, border-color 0.12s;
+  color: inherit;
+  width: 100%;
+}
+.role-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+.role-item.active {
+  background: rgba(29, 122, 224, 0.18);
+  border-color: rgba(29, 122, 224, 0.45);
+}
+
+.role-item-badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: 750;
+  font-size: 11.5px;
+  color: #ffffff;
+  flex-shrink: 0;
+}
+
+.role-item-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.role-item-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.role-item-name {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.role-item-rank {
+  font-size: 11px;
+  color: #94a3b8;
+  font-weight: 500;
+  margin-top: 1px;
+}
+
+.role-item-desc {
+  font-size: 11px;
+  color: #cbd5e1;
+  margin-top: 4px;
+  line-height: 1.3;
+}
+
+.role-dropdown-footer {
+  padding: 8px 14px;
+  background: rgba(255, 255, 255, 0.02);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 10px;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .content {
