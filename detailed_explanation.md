@@ -4,7 +4,7 @@
 > **Problem Statement ID:** 26249 · **Organization:** Ministry of Defence (MoD) · **Department:** Defence Services Staff College · **Category:** Software · **Theme:** Transportation & Logistics
 >
 > **GitHub Repository:** [https://github.com/im-yousuf/AIR-POWER](https://github.com/im-yousuf/AIR-POWER)  
-> **Live Production:** [https://airpower-predictive-maintenance.vercel.app](https://airpower-predictive-maintenance.vercel.app) (and [https://airpower-predictive-maintenance-mu.vercel.app](https://airpower-predictive-maintenance-mu.vercel.app))  
+> **Live Production:** [https://airpower-predictive-maintenance-mu.vercel.app](https://airpower-predictive-maintenance-mu.vercel.app)  
 > **Stack:** React 18 + TypeScript + Vite (zero runtime charting libraries; custom hand-built SVG visuals)  
 > **Size:** 22 source files · ~5,600 lines · production bundle ~255 KB JS + 22 KB CSS  
 > **Build Verification:** Strict TypeScript verification (`npx tsc --noEmit`), zero console errors, zero hydration mismatches.

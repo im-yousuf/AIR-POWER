@@ -2,7 +2,7 @@
 
 > **Source template:** `SIH2026-IDEA-Presentation-Format.pptx` (official, 7 slides) — analysed slide-by-slide below.
 > **Companion docs:** [detailed_explanation.md](detailed_explanation.md) (architecture & pitch), [video_script.md](video_script.md) (7–10 min video), [README.md](README.md) (run/coverage).
-> **Live site:** https://airpower-predictive-maintenance.vercel.app · **Repo:** `github.com/qwertypoiuy9/SIH_249-devin` (`main`)
+> **Live site:** https://airpower-predictive-maintenance-mu.vercel.app · **Repo:** `github.com/im-yousuf/AIR-POWER` (`main`)
 
 ---
 
@@ -301,8 +301,8 @@ The official file contains **7 slides**. Slide 7 is *IMPORTANT INSTRUCTIONS* and
 
 - **22 source files · 5,719 lines** (TypeScript strict, React 18, Vite)
 - **Bundle:** 247.9 KB JS (**77.7 KB gz**) + 19.1 KB CSS (**5.0 KB gz**) + 0.6 KB HTML
-- **Repo:** `github.com/qwertypoiuy9/SIH_249-devin` — single `main` branch, clean history, Git-connected to Vercel → **push = production deploy in ~22–26 s**
-- **Live:** https://airpower-predictive-maintenance.vercel.app (HTTP 200, zero console errors)
+- **Repo:** `github.com/im-yousuf/AIR-POWER` — single `main` branch, clean history, Git-connected to Vercel → **push = production deploy in ~22–26 s**
+- **Live:** https://airpower-predictive-maintenance-mu.vercel.app (HTTP 200, zero console errors)
 - **Commands:** `npm install` · `npm run dev` (localhost:5173) · `npm run build` (typecheck + build) · `git push origin main` (auto-deploys)
 - **Responsive verified at:** 390 px (drawer, no h-scroll), 1440 px, 1920 px (content capped 1560 px, zero toggle shift)
 

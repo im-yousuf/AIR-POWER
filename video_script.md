@@ -5,7 +5,7 @@
 > **Target Video Length:** ~3 min 30 s to 3 min 45 s (perfect for standard 3–4 minute pitch limits)  
 > **Spoken Word Count:** ~480 words (~135–140 words per minute pacing)  
 > **GitHub:** [https://github.com/im-yousuf/AIR-POWER](https://github.com/im-yousuf/AIR-POWER)  
-> **Live Site:** [https://airpower-predictive-maintenance.vercel.app](https://airpower-predictive-maintenance.vercel.app) (or `http://localhost:5173`)  
+> **Live Site:** [https://airpower-predictive-maintenance-mu.vercel.app](https://airpower-predictive-maintenance-mu.vercel.app) (or `http://localhost:5173`)  
 > **Companion Architecture Guide:** [detailed_explanation.md](detailed_explanation.md)
 
 ---

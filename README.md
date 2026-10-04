@@ -1,7 +1,6 @@
 # AirPower — Predictive Maintenance & Fleet Availability Platform
 
-> 🚀 **Live Production Deployment (Vercel):** [https://airpower-predictive-maintenance.vercel.app](https://airpower-predictive-maintenance.vercel.app)  
-> 🔗 **Alternate Mirror:** [https://airpower-predictive-maintenance-mu.vercel.app](https://airpower-predictive-maintenance-mu.vercel.app)  
+> 🚀 **Live Production Deployment (Vercel):** [https://airpower-predictive-maintenance-mu.vercel.app](https://airpower-predictive-maintenance-mu.vercel.app)  
 > 📁 **GitHub Repository:** [https://github.com/im-yousuf/AIR-POWER](https://github.com/im-yousuf/AIR-POWER)
 
 [![Live Application](https://img.shields.io/badge/Live%20Demo-Vercel-success?style=for-the-badge&logo=vercel)](https://airpower-predictive-maintenance-mu.vercel.app)
@@ -14,8 +13,7 @@
 ## 🌐 About & Live Vercel Deployment
 
 AirPower is deployed live on Vercel at:
-- **Primary Production URL:** **[https://airpower-predictive-maintenance-mu.vercel.app](https://airpower-predictive-maintenance-mu.vercel.app)**
-- **Alternate Production URL:** **[https://airpower-predictive-maintenance.vercel.app](https://airpower-predictive-maintenance.vercel.app)**
+- **Official Live Application:** **[https://airpower-predictive-maintenance-mu.vercel.app](https://airpower-predictive-maintenance-mu.vercel.app)**
 
 An integrated, military-grade predictive maintenance and fleet readiness platform built for the **Ministry of Defence (MoD) — Defence Services Staff College (DSSC)** under **Problem Statement ID: 26249**.
 
