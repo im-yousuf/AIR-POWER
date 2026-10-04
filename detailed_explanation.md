@@ -3,10 +3,11 @@
 
 > **Problem Statement ID:** 26249 · **Organization:** Ministry of Defence (MoD) · **Department:** Defence Services Staff College · **Category:** Software · **Theme:** Transportation & Logistics
 >
-> **Live site:** https://airpower-predictive-maintenance.vercel.app
+> **GitHub Repository:** https://github.com/im-yousuf/AIR-POWER
+> **Live Production:** https://airpower-predictive-maintenance-mu.vercel.app (and https://airpower-predictive-maintenance.vercel.app)
 > **Stack:** React 18 + TypeScript + Vite (no runtime dependency besides React), custom SVG charts, Vercel hosting
-> **Size:** 22 source files · ~5,400 lines · production bundle 248 KB JS (78 KB gzipped) + 18 KB CSS
-> **State:** builds clean (`npm run build`), zero console errors, deployed to production
+> **Size:** 22 source files · ~5,500 lines · production bundle 249 KB JS (78 KB gzipped) + 18 KB CSS
+> **State:** builds clean (`npx tsc --noEmit && vite build`), zero console errors, deployed to production
 
 ---
 
@@ -89,14 +90,14 @@ Every arrow in that chain is a real, clickable, state-persisting action in the a
 
 | # | Page | What it proves to a judge |
 |---|---|---|
-| 1 | **Fleet overview** | The headline: 75% availability ▲7 pts, AOG banner, availability trend vs reactive baseline, downtime pareto with *avoidable* share, 5-source health |
-| 2 | **Aircraft inventory** | One unified record per airframe (20 tails): status, health, RUL alert, hours, cycles, utilisation, open WOs |
+| 1 | **Fleet overview** | The headline: 75% availability ▲7 pts, AOG banner, availability trend vs reactive baseline, downtime pareto, fleet health snapshot, and top predicted faults with show-more pagination |
+| 2 | **Aircraft inventory** | One unified record per airframe (20 tails): status, health, RUL alert, hours, cycles, utilisation with show-more toggle, open WOs |
 | 3 | **Digital twin** | Replica with 8 labelled system callouts, life-limited parts, **live 2 s telemetry scored by a real detector**, per-aircraft predictions + tech record |
-| 4 | **Predictive faults** | 29 AI predictions with RUL/confidence/drivers, acknowledge → raise WO → indent, **audit log** |
-| 5 | **Work control** | 51 work orders (predictive/preventive/corrective), agency capacity, 14-day window, your AI-raised WO tagged |
-| 6 | **Spares & stores** | 12 lines, cover-days vs lead time, 11 flagged, indents advancing RAISED → APPROVED → RECEIVED |
+| 4 | **Predictive faults** | 29 AI predictions with streamlined view (5 by default + "Show more" toggle), RUL/confidence/drivers, acknowledge → raise WO → indent, **audit log** |
+| 5 | **Work control** | 50+ work orders (predictive/preventive/corrective) with show-more pagination, agency capacity, 14-day window, your AI-raised WO tagged |
+| 6 | **Spares & stores** | 12 lines with show-more toggle, cover-days vs lead time, 11 flagged, indents advancing RAISED → APPROVED → RECEIVED |
 | 7 | **Data integration** | The 5 source feeds, pipeline, quality guards, 20 unified tech records, **bring-your-own-CSV detector** |
-| 8 | **Maintenance analytics** | Before-vs-after on all six named metrics, model registry with drift, risk horizon, asset utilisation |
+| 8 | **Maintenance analytics** | Before-vs-after on all six named metrics, **horizontal 4-model production registry**, rich downtime pareto with avoidable hours, risk horizon, asset utilisation |
 
 ### 2.4 Differentiators (what makes it more than a dashboard)
 

@@ -159,66 +159,89 @@ export default function Analytics() {
         </Card>
       </div>
 
-      <div className="grid g3">
-        <Card title="Downtime pareto" subtitle={`Grounding hours by system (total ${totalDowntime.toLocaleString()} h)`}>
-          {downtimePareto.slice(0, 6).map((r, i) => (
-            <BarRow
-              key={r.system}
-              label={r.system}
-              value={r.hours}
-              max={downtimePareto[0].hours}
-              color={`hsl(${200 - i * 9} 85% ${58 - i * 2}%)`}
-              right={`${r.hours} h`}
-            />
-          ))}
-          <div className="note">
-            Top 2 systems account for{' '}
-            {Math.round(((downtimePareto[0].hours + downtimePareto[1].hours) / totalDowntime) * 100)}% of all grounding
-            hours.
+      <div className="grid g2">
+        <Card
+          title="Downtime pareto & avoidable hours"
+          subtitle={`Root cause analysis across ${totalDowntime.toLocaleString()} total grounding hours`}
+          right={
+            <span className="chip">
+              <span style={{ color: '#10b981' }}>●</span>{' '}
+              {Math.round((downtimePareto.reduce((s, r) => s + r.avoidable, 0) / totalDowntime) * 100)}% avoidable via AI
+            </span>
+          }
+        >
+          <div className="stat-strip" style={{ marginBottom: 12 }}>
+            <div className="stat">
+              <b style={{ color: 'var(--text)' }}>{totalDowntime.toLocaleString()} h</b>
+              <span>Total grounding</span>
+            </div>
+            <div className="stat">
+              <b style={{ color: '#10b981' }}>
+                {downtimePareto.reduce((s, r) => s + r.avoidable, 0).toLocaleString()} h
+              </b>
+              <span>Avoidable via AI</span>
+            </div>
+            <div className="stat">
+              <b style={{ color: '#1d7ae0' }}>{downtimePareto[0].system}</b>
+              <span>Primary driver</span>
+            </div>
           </div>
-        </Card>
 
-        <Card title="ML model registry" subtitle="Models running in production" pad={false}>
-          <div style={{ padding: 14, display: 'grid', gap: 12 }}>
-            {MODELS.map((m) => (
-              <div className="model" key={m.key}>
-                <div className="row tight">
-                  <h4 style={{ flex: 1 }}>{m.name}</h4>
-                  <Tag>{m.drift}</Tag>
-                </div>
-                <div className="task">
-                  {m.task} · {m.algo}
-                </div>
-                {m.metrics.map((x) => (
-                  <div className="metric-row" key={x.label}>
-                    <span className="muted">{x.label}</span>
-                    <b>{x.value}</b>
-                  </div>
-                ))}
-                <div className="dim" style={{ fontSize: 11, marginTop: 6 }}>
-                  trained {m.trained}
-                </div>
-              </div>
-            ))}
+          <Table dense head={['System', 'Total hrs', 'Avoidable', 'Avoidable %', 'Impact share']}>
+            {downtimePareto.map((r, i) => {
+              const pct = Math.round((r.avoidable / r.hours) * 100)
+              const share = Math.round((r.hours / totalDowntime) * 100)
+              return (
+                <tr key={r.system}>
+                  <td style={{ fontWeight: 600 }}>{r.system}</td>
+                  <td className="mono num">{r.hours} h</td>
+                  <td className="mono num" style={{ color: '#10b981' }}>
+                    {r.avoidable} h
+                  </td>
+                  <td>
+                    <Tag tone={pct >= 50 ? 'ok' : pct >= 35 ? 'info' : 'warn'}>{`${pct}%`}</Tag>
+                  </td>
+                  <td style={{ width: 130 }}>
+                    <div className="row tight">
+                      <div className="health ok" style={{ flex: 1 }}>
+                        <div
+                          className="health-fill"
+                          style={{
+                            width: `${share * 2.8}%`,
+                            background: `hsl(${200 - i * 11} 85% ${56 - i * 2}%)`,
+                          }}
+                        />
+                      </div>
+                      <span className="mono dim" style={{ fontSize: 11 }}>
+                        {share}%
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+              )
+            })}
+          </Table>
+          <div className="note" style={{ marginTop: 10 }}>
+            {Math.round((downtimePareto.reduce((s, r) => s + r.avoidable, 0) / totalDowntime) * 100)}% of downtime has
+            detectable sensor precursors. Intervening before hard failure converts unpredicted groundings into planned line checks.
           </div>
         </Card>
 
         <div className="grid" style={{ gap: 16, alignContent: 'start' }}>
-          <Card title="Risk horizon" subtitle="Predictions by urgency band">
+          <Card title="Risk horizon" subtitle="Predictions categorized by urgency window">
             {riskBands.map((b) => (
               <BarRow key={b.label} label={b.label} value={b.value} max={10} color={b.color} right={`${b.value}`} />
             ))}
             <div className="note">
-              Anything inside 7 days is auto-escalated to the flight-line supervisor and pre-emptively indented for
-              spares.
+              Anything inside 7 days auto-escalates to the flight-line supervisor and triggers pre-emptive spares indents.
             </div>
           </Card>
 
-          <Card title="Utilisation of critical assets" subtitle="Airframes and high-value LRUs">
+          <Card title="Utilisation of critical assets" subtitle="Airframes and high-value LRUs ranking">
             <Table dense head={['Asset', 'Class', 'Utilisation', 'Status']}>
               {[...FLEET]
                 .sort((a, b) => b.utilisation - a.utilisation)
-                .slice(0, 7)
+                .slice(0, 5)
                 .map((a) => (
                   <tr key={a.id}>
                     <td className="mono">{a.tail}</td>
@@ -237,6 +260,37 @@ export default function Analytics() {
           </Card>
         </div>
       </div>
+
+      <Card
+        title="ML model registry"
+        subtitle="Production models running continuous inference across sensor streams, RUL regression & hazard curves"
+        right={<Tag tone="ok">4 MODELS ACTIVE IN PROD</Tag>}
+      >
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: 14 }}>
+          {MODELS.map((m) => (
+            <div className="model" key={m.key} style={{ display: 'flex', flexDirection: 'column' }}>
+              <div className="row tight" style={{ marginBottom: 6 }}>
+                <h4 style={{ flex: 1, fontSize: 13.5 }}>{m.name}</h4>
+                <Tag tone={m.drift === 'STABLE' ? 'ok' : m.drift === 'MONITOR' ? 'warn' : 'bad'}>{m.drift}</Tag>
+              </div>
+              <div className="task" style={{ flex: 1, fontSize: 11.5, marginBottom: 10 }}>
+                {m.task} · <span className="dim">{m.algo}</span>
+              </div>
+              <div style={{ marginTop: 'auto' }}>
+                {m.metrics.map((x) => (
+                  <div className="metric-row" key={x.label} style={{ fontSize: 11.5, padding: '4px 0' }}>
+                    <span className="muted">{x.label}</span>
+                    <b className="mono">{x.value}</b>
+                  </div>
+                ))}
+                <div className="dim" style={{ fontSize: 10.5, marginTop: 8, textAlign: 'right' }}>
+                  trained {m.trained}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </Card>
     </div>
   )
 }

@@ -7,11 +7,15 @@ An integrated, AI-driven maintenance analytics platform for an air fleet: it uni
 separate systems, predicts failures before they ground an aircraft, and shows real fleet availability instead of
 reactive counters.
 
+- **GitHub Repository:** [https://github.com/im-yousuf/AIR-POWER](https://github.com/im-yousuf/AIR-POWER)
+- **Live Production URL:** [https://airpower-predictive-maintenance-mu.vercel.app](https://airpower-predictive-maintenance-mu.vercel.app)
+- **Alternate Production Domain:** [https://airpower-predictive-maintenance.vercel.app](https://airpower-predictive-maintenance.vercel.app)
+
 ```bash
 npm install
 npm run dev      # http://localhost:5173
 npm run build    # production build
-npm run typecheck
+npx tsc --noEmit # typecheck
 ```
 
 React + TypeScript + Vite, no runtime dependencies beyond React. All charts, gauges and the digital-twin replica are
@@ -26,24 +30,24 @@ hand-built SVG. **All data is simulated** — no operational aircraft connectivi
 | **Spares** data not integrated | **Spares & stores** page: cover-days vs supplier lead time, reorder levels, reservations, stockout risk; automatic prediction → indent trigger |
 | **Maintenance agencies** not integrated | Agency utilisation and work-order allocation inside **Work control**; partner feed health shown in the integration hub |
 | **Delayed fault prediction** | **Predictive fault detection** page — AI models (GBM-RUL, Isolation Forest, autoencoder, Weibull survival) produce remaining-useful-life forecasts with confidence, anomaly score, SHAP-style drivers and an auditable alert/outcome log; KPI "mean early warning lead time" |
-| **AI/ML-based predictive maintenance** (technology opportunity) | Model registry + live predictions + feature-contribution analysis + detection pipeline from sensor to work order |
+| **AI/ML-based predictive maintenance** (technology opportunity) | Horizontal production model registry + live predictions + feature-contribution analysis + detection pipeline from sensor to work order |
 | **IoT / aircraft health monitoring** | **Digital twin → live telemetry**: 2-second streaming sensor traces (EGT, vibration, hyd pressure, crack gauge, …) with warn/critical thresholds and live status pills |
 | **Digital twins** | **Digital twin** page: top-down airframe replica with per-system health nodes, life-limited-part usage (fatigue, engine life, brakes, tyres, contamination), sub-system condition tiles |
-| **Integrated maintenance analytics platform** | **Maintenance analytics** page: before/after impact table, availability trend, downtime pareto, MTBF/MTTR, risk horizon, model performance |
+| **Integrated maintenance analytics platform** | **Maintenance analytics** page: before/after impact table, availability trend, rich downtime pareto with avoidable hours, MTBF/MTTR, risk horizon, horizontal 4-model registry |
 | **Low aircraft availability** | Fleet overview: availability & mission-capable gauges, readiness by class, status donut, 12-month trend vs reactive baseline |
 | **Avoidable aircraft downtime** | Downtime pareto with the *avoidable* share called out, downtime-hours-avoided KPI, work-order turnaround (MTTR) tracking |
 | **Sub-optimal utilisation of critical assets** | Utilisation tables per airframe (inventory + analytics), criticality-A spares coverage, agency load, idle-airframe flying-hour loss |
 
-## Pages
+## Pages & Key Features
 
-1. **Fleet overview** — readiness KPIs, availability trend, top predicted faults, downtime pareto, data-source health, spares risks.
+1. **Fleet overview** — readiness KPIs, availability trend, top predicted faults with show-more pagination, downtime pareto, data-source health, fleet health snapshot, and spares risks.
 2. **Aircraft inventory** — 20 airframes, filters/search, health, RUL alert, utilisation, open work orders.
 3. **Digital twin** — replica + live IoT telemetry + life-limited parts + AI predictions + tech record for the selected tail.
-4. **Predictive fault detection** — alert feed, driver analysis, recommended action, full RUL table, model performance, outcome log.
-5. **Maintenance planning & work control** — 50 work orders (predictive/preventive/corrective), status filters, agency capacity, 14-day schedule, reactive-vs-planned shift.
-6. **Spares & stores** — inventory ledger, stockout/lead-time risk, long-lead parts, automatic indent flow.
-7. **Data integration hub** — the five feeds, pipeline, quality guards, unified technical records.
-8. **Maintenance analytics** — before/after impact, model registry, trend, pareto, risk horizon, asset utilisation.
+4. **Predictive fault detection** — streamlined alert feed (top 5 critical alerts by default with "Show more" toggle for all 29 predictions), driver analysis, recommended action, full RUL table, model performance, outcome log.
+5. **Maintenance planning & work control** — 50+ work orders (predictive/preventive/corrective) with show-more toggle, status filters, agency capacity, 14-day schedule, reactive-vs-planned shift.
+6. **Spares & stores** — inventory ledger with smart pagination, stockout/lead-time risk, long-lead parts, automatic indent flow.
+7. **Data integration hub** — the five feeds, pipeline, quality guards, unified technical records, and CSV telemetry tester.
+8. **Maintenance analytics** — before/after impact, horizontal 4-model registry with drift tracking, availability trend, comprehensive downtime pareto & avoidable hours table, risk horizon, asset utilisation.
 
 ## User flow — how each person actually uses it
 

@@ -2,7 +2,8 @@
 
 > **Purpose:** a record-while-you-speak script for a screen-recording video that explains problem statement **26249 — Air Power: Predictive Maintenance & Fleet Availability** and demos the live prototype.
 > **Target length:** ~8 min 45 s (comfortably inside 7–10 min). Spoken text ≈ 1,250 words at a natural ~145 wpm.
-> **Site:** https://airpower-predictive-maintenance.vercel.app (or `npm run dev` locally)
+> **GitHub:** https://github.com/im-yousuf/AIR-POWER
+> **Live Site:** https://airpower-predictive-maintenance-mu.vercel.app (or `npm run dev` locally)
 > **Companion doc:** [detailed_explanation.md](detailed_explanation.md) — full architecture, PPT blueprint, judge Q&A.
 
 ### How to read this file
@@ -146,11 +147,11 @@ Each scene has:
 
 ### Scene 6 — 4:20–5:50 · Predictive faults — the closed loop ★ (the climax)
 
-**🖥 On screen:** Click **Predictive faults**. Point at the alert count (29 active) and severity badges. Select the **top CRITICAL alert**. Show: predicted RUL + confidence, the **feature-contribution bars** (why the model fired), recommended action, and the outcome log. Then — deliberately, one at a time — click **Acknowledge**, then **Raise work order**, then **Indent spare**. Let each click visibly register. Finally scroll to the **audit log** and point at the new entries.
+**🖥 On screen:** Click **Predictive faults**. Point at the alert count (29 active) and severity badges. Notice the alert feed: it displays the top urgent alerts cleanly with a "Show more" button to expand all 29 predictions without overwhelming the screen. Select the **top CRITICAL alert**. Show: predicted RUL + confidence, the **feature-contribution bars** (why the model fired), recommended action, and the outcome log. Then — deliberately, one at a time — click **Acknowledge**, then **Raise work order**, then **Indent spare**. Let each click visibly register. Finally scroll to the **audit log** and point at the new entries.
 
 **🎤 Say:**
 
-> Here is the heart of the platform: 29 active AI predictions, most urgent first. Pick one and you don't just get a red flag — you get the *why*. Feature contributions show which channels drove this alert: EGT margin erosion, vibration trend, cycles accumulated. Predicted remaining useful life: **days, with a confidence band**, and a recommended action with the part already identified. And every alert carries an outcome — caught early, false positive, missed — because a model you can't audit is a model you can't trust.
+> Here is the heart of the platform: 29 active AI predictions, ordered by urgency. Notice how organized the feed is — showing the immediate critical priorities with a one-click expand for the full fleet queue. Pick one and you don't just get a red flag — you get the *why*. Feature contributions show which channels drove this alert: EGT margin erosion, vibration trend, cycles accumulated. Predicted remaining useful life: **days, with a confidence band**, and a recommended action with the part already identified. And every alert carries an outcome — caught early, false positive, missed — because a model you can't audit is a model you can't trust.
 >
 > Now watch the loop close. Three buttons.
 >
@@ -164,11 +165,11 @@ Each scene has:
 
 ### Scene 7 — 5:50–6:30 · Work control + Spares — the write-back
 
-**🖥 On screen:** Click **Work control** — point at the job tagged `raised by you · PRD-xxxx`. Then click **Spares & stores** — point at **Live indents** showing your indent at `RAISED`, and click through `APPROVED → RECEIVED` if you want the motion. Point at a risk-flagged line (cover-days < lead time).
+**🖥 On screen:** Click **Work control** — point at the job tagged `raised by you · PRD-xxxx` (with show-more pagination for the 50+ orders). Then click **Spares & stores** — point at **Live indents** showing your indent at `RAISED`, and click through `APPROVED → RECEIVED` if you want the motion. Point at a risk-flagged line (cover-days < lead time) and show-more ledger toggle.
 
 **🎤 Say:**
 
-> The work order I just raised is right here — 51 orders on the board, agency load and turnaround times visible, a 14-day window to schedule against. Because the alert arrived five days early, this job gets slotted into servicing that had to happen anyway — *that* is where the downtime saving comes from, not from working faster.
+> The work order I just raised is right here — 50+ orders on the board, agency load and turnaround times visible, a 14-day window to schedule against. Because the alert arrived five days early, this job gets slotted into servicing that had to happen anyway — *that* is where the downtime saving comes from, not from working faster.
 >
 > And stores sees the same thing: the indent I raised is now in Live indents, advancing RAISED → APPROVED → RECEIVED. The ledger also flags every line whose cover-days are shorter than the supplier's lead time — eleven of twelve lines today — so long-lead parts get ordered *before* the aircraft is on jacks.
 
@@ -194,15 +195,15 @@ Each scene has:
 
 ### Scene 9 — 7:15–7:55 · Maintenance analytics — before vs after
 
-**🖥 On screen:** Click **Maintenance analytics**. Show the **six-metric before/after table** row by row, then wave at the **model registry** (4 models with MAE/precision/drift) and the **risk horizon**.
+**🖥 On screen:** Click **Maintenance analytics**. Show the **six-metric before/after table** row by row. Then point at the **Downtime pareto & avoidable hours table** displaying root causes and the **horizontal ML model registry shelf** showing all 4 production models side-by-side.
 
 **🎤 Say:**
 
 > Command's screen: before versus after, on every metric the problem statement names. Availability 68 → 75. Mission capable 74 → 80. MTBF 34.5 → 42.3 flight hours. Time to repair 41 → 21.9 hours. Spares fill rate 71 → 100 percent. And the one that defines the cultural shift: **reactive share of work, 69 percent down to 31 percent.**
 >
-> Every figure here derives from a single baseline constant — the KPI cards, the trend chart and this table can never disagree. And the model registry shows all four models with their accuracy and drift status, because models decay quietly if nobody watches them.
+> Down below, the Downtime Pareto breaks down all eight aircraft systems — proving that forty-five percent of grounding hours were avoidable with sensor precursors. And across the bottom, our ML Model Registry lays out all four production models horizontally — RUL regressor, Isolation Forest, Autoencoder, and Weibull survival — tracking their metrics and drift status live so operational readiness never degrades unnoticed.
 
-**✍ Note:** Read the six rows with rhythm — one beat each. Don't paraphrase the numbers.
+**✍ Note:** Read the six rows with rhythm — one beat each. Point at the horizontal model cards when concluding the scene.
 
 ---
 
