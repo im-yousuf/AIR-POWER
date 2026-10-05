@@ -132,7 +132,6 @@ function AppShell() {
 
   const { roleId, setRoleId } = usePlatform()
   const currentRole = ROLES.find((r) => r.id === roleId) || ROLES[0]
-  const isCurrentPagePrimary = ROLE_PRIMARY_PAGES[roleId]?.includes(page)
 
   useEffect(() => {
     const id = window.setInterval(() => setNow(new Date()), 1000)
@@ -229,15 +228,6 @@ function AppShell() {
                 <span className="dot" />
                 LIVE IoT FEED
               </span>
-              {isCurrentPagePrimary ? (
-                <span className="perm-chip primary" title={`Operational authority active for ${currentRole.name}`}>
-                  ✓ {currentRole.name.toUpperCase()} COMMAND
-                </span>
-              ) : (
-                <span className="perm-chip readonly" title="Audit mode: Situational awareness active across all defense units. Action buttons are locked to authorized roles.">
-                  🔒 READ-ONLY AUDIT
-                </span>
-              )}
             </div>
           </div>
           {/* Absolutely centred brand heading */}

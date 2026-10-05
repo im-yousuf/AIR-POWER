@@ -1635,7 +1635,8 @@ svg.chart path[stroke="#4cc2ff"] {
   }
 
   .topbar .crumb,
-  .topbar .live {
+  .topbar .live,
+  .topbar-brand-center {
     display: none;
   }
 
